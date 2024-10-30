@@ -1,5 +1,5 @@
-require "rails_alipay/version"
-require "rails_alipay/engine"
+require 'rails_alipay/config'
+require 'rails_alipay/engine'
 
 module RailsAlipay
   # Your code goes here...

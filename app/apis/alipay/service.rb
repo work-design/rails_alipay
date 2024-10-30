@@ -10,7 +10,7 @@ module Alipay
 
     def base_url
       return @base_url if defined? @base_url
-      if Alipay.config.sandbox
+      if RailsAlipay.config.sandbox
         @base_url = URI('https://openapi.alipaydev.com/gateway.do')
       else
         @base_url = URI('https://openapi.alipay.com/gateway.do')
@@ -40,8 +40,8 @@ module Alipay
 
     def prepare_page_params(params, options = {})
       result = {
-        return_url: params.fetch(:return_url, Alipay.config.return_url),
-        notify_url: params.fetch(:notify_url, Alipay.config.notify_url)
+        return_url: params.fetch(:return_url, RailsAlipay.config.return_url),
+        notify_url: params.fetch(:notify_url, RailsAlipay.config.notify_url)
       }
       result.compact!
       result.merge! common_params(options)
@@ -59,7 +59,7 @@ module Alipay
     end
 
     def common_params(params)
-      params[:app_id] ||= Alipay2.config.appid
+      params[:app_id] ||= RailsAlipay.config.appid
       params.merge!(
         charset: 'utf-8',
         timestamp: Utils.timestamp,
