@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
 module Alipay
-  module Service
-    module Api
+  module Api
+    module Core
+      BASE = 'https://openapi.alipay.com/v3/'
+
+
+      def trade_pay
+        post 'alipay/trade/pay'
+      end
 
       API = {
         trade_query: {
@@ -31,26 +37,6 @@ module Alipay
           required: [:out_trade_no, :refund_amount]
         }
       }
-
-      API.each do |key, api|
-        class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
-          def #{key}(params, options = {})
-            params = #{api[:default]}.merge(params)
-            Alipay::Utils.check_params(params, #{api[:required]})
-            
-            options.merge!(method: '#{api[:method]}')
-            execute(params, options)
-          end
-
-          def #{key}_url(params, options = {})
-            params = #{api[:default]}.merge(params)
-            Alipay::Utils.check_params(params, #{api[:required]})
-            
-            options.merge!(method: '#{api[:method]}')
-            page_execute_url(params, options)
-          end
-        RUBY_EVAL
-      end
 
     end
   end

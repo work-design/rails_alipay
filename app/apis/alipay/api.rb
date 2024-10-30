@@ -1,21 +1,9 @@
 # frozen_string_literal: true
 
 module Alipay
-  module Service
-    extend self
-    extend App
-    extend Page
-    extend Api
-    extend Auth
-
-    def base_url
-      return @base_url if defined? @base_url
-      if RailsAlipay.config.sandbox
-        @base_url = URI('https://openapi.alipaydev.com/gateway.do')
-      else
-        @base_url = URI('https://openapi.alipay.com/gateway.do')
-      end
-    end
+  module Api
+    include CommonApi
+    include Core
 
     def execute(params, options = {})
       params = prepare_params(params, options)
