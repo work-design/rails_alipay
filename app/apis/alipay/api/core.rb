@@ -5,8 +5,13 @@ module Alipay
     module Core
       BASE = 'https://openapi.alipay.com/v3/'
 
-      def initialize(appid: nil)
-        @appid = appid
+
+      def trade_pay
+        post 'alipay/trade/pay', base: BASE
+      end
+
+      def initialize(app)
+        @app = app
         @client = HTTPX.with(
           ssl: {
             verify_mode: OpenSSL::SSL::VERIFY_NONE
@@ -15,10 +20,6 @@ module Alipay
             'Accept' => 'application/json'
           }
         )
-      end
-
-      def trade_pay
-        post 'alipay/trade/pay'
       end
 
       def post(path, origin: nil, params: {}, headers: {}, debug: nil, **payload)
@@ -33,7 +34,7 @@ module Alipay
 
       def with_common_headers(method, path, params: {}, headers: {})
         r = {
-          app_id: @appid,
+          app_id: @app.appid,
           nonce: SecureRandom.hex,
           timestamp: Time.current.to_ms
         }
@@ -47,7 +48,7 @@ module Alipay
         ].join("\n")
 
         headers.merge!(
-          authorization: Sign::RSA2.sign(@key, content)
+          authorization: Sign::RSA2.sign(@app.private_rsa, content)
         )
 
         yield headers
