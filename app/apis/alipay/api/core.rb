@@ -47,7 +47,7 @@ module Alipay
         ].join("\n")
 
         headers.merge!(
-          authorization: Sign::RSA2.sign(@app.private_rsa, content)
+          authorization: Sign::Rsa2.sign(@app.private_rsa, content)
         )
 
         yield headers

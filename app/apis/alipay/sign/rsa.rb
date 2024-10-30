@@ -3,7 +3,7 @@ require 'base64'
 
 module Alipay
   module Sign
-    module RSA
+    module Rsa
       extend self
 
       def sign(key, string)
