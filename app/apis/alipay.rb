@@ -1,14 +1,8 @@
-require 'net/http'
-require 'cgi'
+require 'alipay/sign'
+require 'alipay/service'
+require 'alipay/notify'
 
-require 'alipay2/config'
-require 'alipay2/utils'
-require 'alipay2/sign'
-require 'alipay2/service'
-require 'alipay2/notify'
-
-module Alipay2
-  attr_accessor :root
+module Alipay
   extend self
 
 end

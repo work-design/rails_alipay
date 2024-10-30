@@ -1,7 +1,7 @@
 require 'alipay2/sign/rsa'
 require 'alipay2/sign/rsa2'
 
-module Alipay2
+module Alipay
   module Sign
     extend self
 

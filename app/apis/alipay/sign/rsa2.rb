@@ -1,7 +1,7 @@
 require 'openssl'
 require 'base64'
 
-module Alipay2
+module Alipay
   module Sign
     module RSA2
       extend self

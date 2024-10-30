@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Alipay2
+module Alipay
   module Service
     module Page
 

@@ -1,4 +1,4 @@
-module Alipay2
+module Alipay
   module Utils
     extend self
 

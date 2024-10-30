@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
-require 'alipay2/service/app'
-require 'alipay2/service/page'
-require 'alipay2/service/api'
-require 'alipay2/service/auth'
-
-module Alipay2
+module Alipay
   module Service
     extend self
     extend App
@@ -15,7 +10,7 @@ module Alipay2
 
     def base_url
       return @base_url if defined? @base_url
-      if Alipay2.config.sandbox
+      if Alipay.config.sandbox
         @base_url = URI('https://openapi.alipaydev.com/gateway.do')
       else
         @base_url = URI('https://openapi.alipay.com/gateway.do')
@@ -45,8 +40,8 @@ module Alipay2
 
     def prepare_page_params(params, options = {})
       result = {
-        return_url: params.fetch(:return_url, Alipay2.config.return_url),
-        notify_url: params.fetch(:notify_url, Alipay2.config.notify_url)
+        return_url: params.fetch(:return_url, Alipay.config.return_url),
+        notify_url: params.fetch(:notify_url, Alipay.config.notify_url)
       }
       result.compact!
       result.merge! common_params(options)
@@ -67,7 +62,7 @@ module Alipay2
       params[:app_id] ||= Alipay2.config.appid
       params.merge!(
         charset: 'utf-8',
-        timestamp: Alipay2::Utils.timestamp,
+        timestamp: Utils.timestamp,
         version: '1.0',
         format: 'JSON'  # optional
       )
@@ -75,7 +70,7 @@ module Alipay2
 
     def sign_params(params)
       params[:sign_type] ||= 'RSA2'
-      params[:sign] = Alipay2::Sign.generate(params)
+      params[:sign] = Sign.generate(params)
       params
     end
   end
