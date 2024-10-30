@@ -5,8 +5,8 @@ module Alipay
     class Core
       BASE = 'https://openapi.alipay.com/v3/'
 
-      def trade_pay
-        post 'alipay/trade/pay', base: BASE
+      def trade_pay(**options)
+        post 'alipay/trade/pay', base: BASE, **options
       end
 
       def initialize(app)
@@ -47,7 +47,7 @@ module Alipay
         ].join("\n")
 
         headers.merge!(
-          authorization: Sign::Rsa2.sign(@app.private_rsa, content)
+          authorization: Sign::Rsa2.sign(@app.private_key, content)
         )
 
         yield headers

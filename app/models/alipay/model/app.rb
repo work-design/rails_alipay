@@ -18,5 +18,9 @@ module Alipay
       @api = Api::Core.new(self)
     end
 
+    def private_key
+      "-----BEGIN PRIVATE KEY-----\n" + private_rsa + "\n-----END PRIVATE KEY-----"
+    end
+
   end
 end
