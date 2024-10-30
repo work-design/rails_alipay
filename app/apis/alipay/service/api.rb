@@ -36,7 +36,7 @@ module Alipay
         class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
           def #{key}(params, options = {})
             params = #{api[:default]}.merge(params)
-            Alipay2::Utils.check_params(params, #{api[:required]})
+            Alipay::Utils.check_params(params, #{api[:required]})
             
             options.merge!(method: '#{api[:method]}')
             execute(params, options)
@@ -44,7 +44,7 @@ module Alipay
 
           def #{key}_url(params, options = {})
             params = #{api[:default]}.merge(params)
-            Alipay2::Utils.check_params(params, #{api[:required]})
+            Alipay::Utils.check_params(params, #{api[:required]})
             
             options.merge!(method: '#{api[:method]}')
             page_execute_url(params, options)
