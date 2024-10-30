@@ -3,7 +3,12 @@ Rails.application.routes.draw do
     namespace :alipay, defaults: { business: 'alipay' } do
       namespace :admin, defaults: { namespace: 'admin' } do
         root 'home#index'
-        resources :apps
+        resources :apps do
+          member do
+            post :edit_cert
+            post :update_cert
+          end
+        end
       end
     end
   end
