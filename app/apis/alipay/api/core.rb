@@ -5,38 +5,53 @@ module Alipay
     module Core
       BASE = 'https://openapi.alipay.com/v3/'
 
+      def initialize(appid: nil)
+        @appid = appid
+        @client = HTTPX.with(
+          ssl: {
+            verify_mode: OpenSSL::SSL::VERIFY_NONE
+          },
+          headers: {
+            'Accept' => 'application/json'
+          }
+        )
+      end
 
       def trade_pay
         post 'alipay/trade/pay'
       end
 
-      API = {
-        trade_query: {
-          method: 'alipay.trade.query',
-          required: [:out_trade_no],
-          default: {}
-        },
-        open_auth_token_app: {
-          method: 'alipay.open.auth.token.app',
-          required: [:grant_type],
-          default: { grant_type: 'authorization_code' }
-        },
-        system_oauth_token: {
-          method: 'alipay.system.oauth.token',
-          required: [],
-          default: {}
-        },
-        user_info_share: {
-          method: 'alipay.user.info.share',
-          required: [],
-          default: {}
-        },
-        trade_refund: {
-          method: 'alipay.trade.refund',
-          default: {},
-          required: [:out_trade_no, :refund_amount]
+      def post(path, origin: nil, params: {}, headers: {}, debug: nil, **payload)
+        with_options = { origin: origin }
+        with_options.merge! debug: Rails.logger.instance_values['logdev'].dev, debug_level: 2 if debug
+
+        with_common_headers('POST', path, params: payload.to_json, headers: headers) do |signed_headers|
+          response = @client.with_headers(signed_headers).with(with_options).post(path, params: params, json: payload)
+          debug ? response : response.json
+        end
+      end
+
+      def with_common_headers(method, path, params: {}, headers: {})
+        r = {
+          app_id: @appid,
+          nonce: SecureRandom.hex,
+          timestamp: Time.current.to_ms
         }
-      }
+        auth_string = r.map(&->(k, v){ "#{k}=#{v}" }).join(',')
+        content = [
+          auth_string,
+          method,
+          "/v3/#{path}",
+          params,
+          ''
+        ].join("\n")
+
+        headers.merge!(
+          authorization: Sign::RSA2.sign(@key, content)
+        )
+
+        yield headers
+      end
 
     end
   end
