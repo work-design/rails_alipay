@@ -3,7 +3,6 @@
 module Alipay
   module Api
     include CommonApi
-    include Core
 
     def execute(params, options = {})
       params = prepare_params(params, options)

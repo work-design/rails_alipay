@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Alipay
-  module Service
+  module Api
     module Page
 
       API = {

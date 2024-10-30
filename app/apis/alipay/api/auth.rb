@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Alipay
-  module Service
+  module Api
     module Auth
       USER_INFO_AUTH_REQUIRED = [
         :scopes,
@@ -31,7 +31,7 @@ module Alipay
           app_id: RailsAlipay.config.appid,
           app_name: 'mc',
           biz_type: 'openservice',
-          pid: RailsAlipay2.config.pid,
+          pid: RailsAlipay.config.pid,
           product_id: 'APP_FAST_LOGIN',
           scope: 'kuaijie',
           target_id: params[:target_id] || Utils.generate_batch_no,

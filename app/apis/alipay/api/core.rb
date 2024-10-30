@@ -2,9 +2,8 @@
 
 module Alipay
   module Api
-    module Core
+    class Core
       BASE = 'https://openapi.alipay.com/v3/'
-
 
       def trade_pay
         post 'alipay/trade/pay', base: BASE
