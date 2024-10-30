@@ -6,7 +6,7 @@ Rails.application.routes.draw do
         resources :apps do
           member do
             post :edit_cert
-            post :update_cert
+            patch :update_cert
           end
         end
       end

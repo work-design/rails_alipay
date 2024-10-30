@@ -1,4 +1,7 @@
-<%= form_with model: @app, scope: '', url: { action: 'update_cert' } do |f| %>
-  <%= f.file_field :cert %>
+<%= form_with theme: 'modal', model: @app, scope: '', url: { action: 'update_cert' } do |f| %>
+  <%= render 'modal_header' %>
+  <section class="modal-card-body">
+    <%= f.file_field :cert %>
+  </section>
   <%= f.submit %>
 <% end %>
