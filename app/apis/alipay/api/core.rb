@@ -6,27 +6,16 @@ module Alipay
       BASE = 'https://openapi.alipay.com/v3/'
 
       def trade_pay(**options)
-        post 'alipay/trade/pay', base: BASE, **options
+        post 'alipay/trade/pay', origin: BASE, **options
       end
 
       def initialize(app)
         @app = app
-        @client = HTTPX.with(
-          ssl: {
-            verify_mode: OpenSSL::SSL::VERIFY_NONE
-          },
-          headers: {
-            'Accept' => 'application/json'
-          }
-        )
       end
 
       def post(path, origin: nil, params: {}, headers: {}, debug: nil, **payload)
-        with_options = { origin: origin }
-        with_options.merge! debug: Rails.logger.instance_values['logdev'].dev, debug_level: 2 if debug
-
         with_common_headers('POST', path, params: payload.to_json, headers: headers) do |signed_headers|
-          response = @client.with_headers(signed_headers).with(with_options).post(path, params: params, json: payload)
+          response = Net::HTTP.post(URI("#{origin}#{path}"), payload.to_json, signed_headers)
           debug ? response : response.json
         end
       end
@@ -45,9 +34,11 @@ module Alipay
           params,
           ''
         ].join("\n")
+        signature = Sign::Rsa2.sign(@app.private_key, content)
 
         headers.merge!(
-          authorization: Sign::Rsa2.sign(@app.private_key, content)
+          'content-type': 'application/json',
+          authorization: "ALIPAY-SHA256withRSA #{auth_string},sign=#{signature}"
         )
 
         yield headers

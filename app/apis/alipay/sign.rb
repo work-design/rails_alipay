@@ -35,7 +35,7 @@ module Alipay
 
     def return_rsa
       return @return_rsa if defined? @return_rsa
-      @return_rsa = "-----BEGIN PUBLIC KEY-----\n" + Alipay2.config.return_rsa + "\n-----END PUBLIC KEY-----"
+      @return_rsa = "-----BEGIN PUBLIC KEY-----\n" + RailsAlipay.config.return_rsa + "\n-----END PUBLIC KEY-----"
     end
 
     # https://docs.open.alipay.com/291/106130
