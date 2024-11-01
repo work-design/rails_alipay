@@ -16,7 +16,7 @@ module Alipay
       def post(path, origin: nil, params: {}, headers: {}, debug: nil, **payload)
         with_common_headers('POST', path, params: payload.to_json, headers: headers) do |signed_headers|
           response = Net::HTTP.post(URI("#{origin}#{path}"), payload.to_json, signed_headers)
-          debug ? response : response.json
+          JSON.parse(response.body)
         end
       end
 
