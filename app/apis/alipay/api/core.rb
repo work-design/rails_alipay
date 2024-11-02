@@ -9,6 +9,10 @@ module Alipay
         post 'alipay/trade/pay', origin: BASE, **options
       end
 
+      def trade_refund(**options)
+        post 'alipay/trade/refund', origin: BASE, **options
+      end
+
       def initialize(app)
         @app = app
       end
