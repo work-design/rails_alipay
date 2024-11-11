@@ -1,5 +1,5 @@
 Gem::Specification.new do |spec|
-  spec.name        = "rails_alipay"
+  spec.name = 'rails_alipay'
   spec.version     = '0.0.1'
   spec.authors     = [ "qinmingyuan" ]
   spec.email       = [ "mingyuan0715@foxmail.com" ]
